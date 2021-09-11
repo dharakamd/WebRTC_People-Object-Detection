@@ -26,9 +26,9 @@ date_default_timezone_set("Asia/Jakarta");
             </div>
             <div class="list-group list-group-flush justify-content-center h-75 mt-3">
                 <!-- Sidebar Container -->
-                <div class="container bg-secondary text-white shadow-lg rounded w-75 p-3">
+                <div class="container bg-secondary text-white shadow-lg  w-90 p-3">
                     <form action="" method="">
-                        <table border="0" width="100%">
+                        <table border="0" width="75%">
                             <tr>
                                 <td>Task</td>
                                 <td>
@@ -43,8 +43,14 @@ date_default_timezone_set("Asia/Jakarta");
                                 <td>
                                     <select name="source" class="form-control">
                                         <option>Url</option>
-                                        <option>Segmentation</option>
+                                        <option>Device</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Device ID</td>
+                                <td>
+                                    <input type="text" placeholder="Dev01/.../..." class="form-control">
                                 </td>
                             </tr>
                         </table>
@@ -82,7 +88,7 @@ date_default_timezone_set("Asia/Jakarta");
             <!-- Page content-->
             <div class="row h-100">
                 <div class="col-sm-1 col-1 list-group list-group-flush justify-content-center">
-                    <button class="btn btn-secondary scroll-nav-page" id="sidebarToggle">
+                    <button class="btn image-banner-2 scroll-nav-page" id="sidebarToggle">
                         <span class="text-dark" style="margin-left: -4px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
                                 <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
@@ -94,36 +100,42 @@ date_default_timezone_set("Asia/Jakarta");
                     <!-- Info Header Box -->
                     <div class="row">
                         <div class="col-sm-6 col-6">
-                            <div class="float-start" style="margin-left: 5%;">
+                            <div class="float-start" style="margin-left: 5%; font-family: Poppins; font-size: 24px;">
                                 <p class="mb-0">People Counting System</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-6">
-                            <div class="float-end" style="margin-right: 10%;">
+                            <div class="float-end" style="margin-right: 10%; font-family: Poppins; font-size: 24px;">
                                 <p class="mb-0"><?= date("h:i A") ?> | <?= date("D, M y") ?></p>
                             </div>
                         </div>
                     </div>
-                    <!-- Video Player Box  -->
-                    <video id="video" autoplay loop muted class="shadow-lg p-1 mb-1" style="width: 99%; border-radius: 10px; background: linear-gradient(to right, black, #262626)">
-            
+                    <!-- Video Player Box  
+                    <video autoplay loop muted class="shadow-lg p-1 mb-1" style="width: 92%; border-radius: 10px; margin-left: 120px; background: linear-gradient(to right, white, #262626)">
+                        <source src="assets/bgobt.mp4" type="video/mp4">
+                    </video> -->
+
+                    <!--Camera-->
+                     <!-- Video Player Box  -->
+                     <video id ='video' autoplay loop muted class="shadow-lg p-1 mb-1" style="width: 99%; border-radius: 20px; background: linear-gradient(to right, black, #262626)">
+    
                     </video>
                     <!-- Panel Footer Box -->
                     <div class="row mt-3">
                         <div class="col-sm-4 col-4">
-                            <div class="float-start">
+                            <div class="float-start" style="font-family: Poppins; font-size: 24px;">
                                 People :
                             </div>
                         </div>
-                        <div class="col-sm-4 col-4">
+                        <div class="col-sm-4 col-4" >
                             <div class="list-group list-group-flush justify-content-center">
                                 <table width="100%">
                                     <tr>
                                         <td class="p-1">
-                                            <button name="start" class="btn btn-danger form-control">Stop</button>
+                                            <button name="start" class="btn btn-danger form-control">STOP</button>
                                         </td>
                                         <td class="p-1">
-                                            <button name="start" class="btn btn-secondary form-control">Start</button>
+                                            <button name="start" class="btn btn-secondary form-control" onclick="accwebcam()">START</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -143,6 +155,48 @@ date_default_timezone_set("Asia/Jakarta");
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+
+    <script>
+        'use strict';
+    
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById('snap');
+    const errorMsgElement = document.getElementById('span#ErrorMsg');
+
+    const constraints = {
+        Audio: true,
+        video:{
+            width: 1080, height: 720,
+        }
+    };
+
+    //Access Webcam
+    function accwebcam(){
+      async function init() {
+        try{
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            handleSuccess(stream);
+            document.getElementById("video").style.borderRadius = "20px";
+        }
+        catch(e){
+            errorMsgElement.innerHTML = 'navigator.getUserMedia.error:${e.toString()}';
+        }
+    }
+    //Success
+    function handleSuccess(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+    }
+    //Load Init
+    init();
+    //Draw Image
+    var context = canvas.getContext('2d');
+    snap.addEventListener("click",function(){
+        context.drawImage(video, 0, 0, 640, 480);
+    })
+    }
+    </script>
 </body>
 
 </html>
