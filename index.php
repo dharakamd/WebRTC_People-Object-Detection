@@ -32,7 +32,7 @@ date_default_timezone_set("Asia/Jakarta");
                             <tr>
                                 <td>Task</td>
                                 <td>
-                                    <select name="task" class="form-control">
+                                    <select id="list1" name="task" class="form-control" onchange="getSelectValue1();">
                                         <option>Detection</option>
                                         <option>Segmentation</option>
                                     </select>
@@ -41,16 +41,16 @@ date_default_timezone_set("Asia/Jakarta");
                             <tr>
                                 <td>Source</td>
                                 <td>
-                                    <select name="source" class="form-control">
+                                    <select id="list2" name="source" class="form-control">
                                         <option>Url</option>
-                                        <option>Device</option>
+                                        <option onchange="accwebcam()">Device</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Device ID</td>
                                 <td>
-                                    <input type="text" placeholder="Dev01/.../..." class="form-control">
+                                    <input type="text" placeholder="Dev01/.../..." class="form-control" onchange="getDevices();">
                                 </td>
                             </tr>
                         </table>
@@ -117,7 +117,7 @@ date_default_timezone_set("Asia/Jakarta");
 
                     <!--Camera-->
                      <!-- Video Player Box  -->
-                     <video id ='video' autoplay loop muted class="shadow-lg p-1 mb-1" style="width: 99%; border-radius: 20px; background: linear-gradient(to right, black, #262626)">
+                     <video id ='video' autoplay loop muted class="shadow-lg p-1 mb-1" style="width: 99%; height: 92%; border-radius: 20px; background: linear-gradient(to right, black, #262626)">
     
                     </video>
                     <!-- Panel Footer Box -->
@@ -132,7 +132,7 @@ date_default_timezone_set("Asia/Jakarta");
                                 <table width="100%">
                                     <tr>
                                         <td class="p-1">
-                                            <button name="start" class="btn btn-danger form-control">STOP</button>
+                                            <button name="start" class="btn btn-danger form-control" onclick="stopwebcam()">STOP</button>
                                         </td>
                                         <td class="p-1">
                                             <button name="start" class="btn btn-secondary form-control" onclick="accwebcam()">START</button>
@@ -157,7 +157,7 @@ date_default_timezone_set("Asia/Jakarta");
     <script src="js/scripts.js"></script>
 
     <script>
-        'use strict';
+    'use strict';
     
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
@@ -195,6 +195,15 @@ date_default_timezone_set("Asia/Jakarta");
     snap.addEventListener("click",function(){
         context.drawImage(video, 0, 0, 640, 480);
     })
+    }
+    var console = { log: function(msg) { div.innerHTML += "<p>" + msg + "</p>"; } };
+
+    function stopwebcam() {
+         if (stream!= null) {
+            stream.getTracks().map(function (val) {
+                val.stop();
+            });
+         }
     }
     </script>
 </body>
